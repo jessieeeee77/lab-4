@@ -1,13 +1,14 @@
 ---
-title: "Lab 04 - La Quinta is Spanish for next to Denny's, Pt. 1"
-author: "Insert your name here"
-date: "Insert date here"
+title: "Lab 04 - Visualizing spatial data"
+author: "Jessie"
+date: "01/31"
 output: github_document
 ---
 
 ### Load packages and data
 
 ```{r load-packages, message = FALSE}
+
 library(tidyverse) 
 library(dsbox) 
 ```
