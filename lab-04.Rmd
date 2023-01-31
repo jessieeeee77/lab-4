@@ -97,5 +97,68 @@ d %>%
 
 ...
 ```{r 8}
-
+library(dplyr)
+library(tidyverse)
+d %>%
+  mutate(country = case_when(state %in% state.abb     ~ "United States",
+                             state == "ANT" ~ "Colombia",
+                             state %in% c("ON", "BC") ~ "canada",
+                             state %in% c("QR", "NL", "PU", "AG", "CH", "FM") ~"Mexico",
+                             state == "FM" ~ "Hunduras" )) %>%
+  filter(country == "United States")
 ```
+Dennys: DE has the lowest amount of dennys and CA has the highest.
+La Quintas: TX has the highest amount of laquintas and foreign countries has the lowest amount. not surprising because it's where people want to spend their holidays.
+```{r q9}
+d %>%
+  count(state)
+c  %>%
+  count(state)
+
+c %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation"))
+```
+
+
+```{r Q10}
+c <- c %>%
+  mutate(establishment = "Denny's")
+d <- d %>%
+  mutate(establishment = "La Quinta")
+c_d <- bind_rows(c, d)
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment)) +
+  geom_point()
+```
+```{r q11}
+c_d %>%
+  filter(state == "NC") %>%
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment, alpha=0.4)) +
+                     theme_linedraw() +
+                  labs (x = "longitude", y = "latitude", title = "NC's dennys and laquinta", fill = "establishment") + 
+  geom_point()
+#not quite true in NC.
+```
+```{r q12}
+c_d %>%
+  filter(state == "TX") %>%
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment, alpha=0.2)) +
+                     theme_linedraw() +
+                  labs (x = "longitude", y = "latitude", title = "TX's dennys and laquinta", fill = "establishment") + 
+  geom_point()
+# quite true in TX 
+```
+
+
+
+
+
+
+
+

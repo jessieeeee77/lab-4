@@ -187,3 +187,144 @@ d %>%
 ### Exercise 8
 
 …
+
+``` r
+library(dplyr)
+library(tidyverse)
+d %>%
+  mutate(country = case_when(state %in% state.abb     ~ "United States",
+                             state == "ANT" ~ "Colombia",
+                             state %in% c("ON", "BC") ~ "canada",
+                             state %in% c("QR", "NL", "PU", "AG", "CH", "FM") ~"Mexico",
+                             state == "FM" ~ "Hunduras" )) %>%
+  filter(country == "United States")
+```
+
+    ## # A tibble: 895 × 7
+    ##    address                         city      state zip   longi…¹ latit…² country
+    ##    <chr>                           <chr>     <chr> <chr>   <dbl>   <dbl> <chr>  
+    ##  1 793 W. Bel Air Avenue           "\nAberd… MD    21001   -76.2    39.5 United…
+    ##  2 3018 CatClaw Dr                 "\nAbile… TX    79606   -99.8    32.4 United…
+    ##  3 3501 West Lake Rd               "\nAbile… TX    79601   -99.7    32.5 United…
+    ##  4 184 North Point Way             "\nAcwor… GA    30102   -84.7    34.1 United…
+    ##  5 2828 East Arlington Street      "\nAda"   OK    74820   -96.6    34.8 United…
+    ##  6 14925 Landmark Blvd             "\nAddis… TX    75254   -96.8    33.0 United…
+    ##  7 909 East Frontage Rd            "\nAlamo" TX    78516   -98.1    26.2 United…
+    ##  8 2116 Yale Blvd Southeast        "\nAlbuq… NM    87106  -107.     35.1 United…
+    ##  9 7439 Pan American Fwy Northeast "\nAlbuq… NM    87109  -107.     35.2 United…
+    ## 10 2011 Menaul Blvd Northeast      "\nAlbuq… NM    87107  -107.     35.1 United…
+    ## # … with 885 more rows, and abbreviated variable names ¹​longitude, ²​latitude
+
+Dennys: DE has the lowest amount of dennys and CA has the highest. La
+Quintas: TX has the highest amount of laquintas and foreign countries
+has the lowest amount. not surprising because it’s where people want to
+spend their holidays.
+
+``` r
+d %>%
+  count(state)
+```
+
+    ## # A tibble: 59 × 2
+    ##    state     n
+    ##    <chr> <int>
+    ##  1 AG        1
+    ##  2 AK        2
+    ##  3 AL       16
+    ##  4 ANT       1
+    ##  5 AR       13
+    ##  6 AZ       18
+    ##  7 BC        1
+    ##  8 CA       56
+    ##  9 CH        1
+    ## 10 CO       27
+    ## # … with 49 more rows
+
+``` r
+c  %>%
+  count(state)
+```
+
+    ## # A tibble: 51 × 2
+    ##    state     n
+    ##    <chr> <int>
+    ##  1 AK        3
+    ##  2 AL        7
+    ##  3 AR        9
+    ##  4 AZ       83
+    ##  5 CA      403
+    ##  6 CO       29
+    ##  7 CT       12
+    ##  8 DC        2
+    ##  9 DE        1
+    ## 10 FL      140
+    ## # … with 41 more rows
+
+``` r
+c %>%
+  count(state) %>%
+  inner_join(states, by = c("state" = "abbreviation"))
+```
+
+    ## # A tibble: 51 × 4
+    ##    state     n name                     area
+    ##    <chr> <int> <chr>                   <dbl>
+    ##  1 AK        3 Alaska               665384. 
+    ##  2 AL        7 Alabama               52420. 
+    ##  3 AR        9 Arkansas              53179. 
+    ##  4 AZ       83 Arizona              113990. 
+    ##  5 CA      403 California           163695. 
+    ##  6 CO       29 Colorado             104094. 
+    ##  7 CT       12 Connecticut            5543. 
+    ##  8 DC        2 District of Columbia     68.3
+    ##  9 DE        1 Delaware               2489. 
+    ## 10 FL      140 Florida               65758. 
+    ## # … with 41 more rows
+
+``` r
+c <- c %>%
+  mutate(establishment = "Denny's")
+d <- d %>%
+  mutate(establishment = "La Quinta")
+c_d <- bind_rows(c, d)
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment)) +
+  geom_point()
+```
+
+![](lab-04_files/figure-gfm/Q10-1.png)<!-- -->
+
+``` r
+c_d %>%
+  filter(state == "NC") %>%
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment, alpha=0.4)) +
+                     theme_linedraw() +
+                  labs (x = "longitude", y = "latitude", title = "NC's dennys and laquinta", fill = "establishment") + 
+  geom_point()
+```
+
+![](lab-04_files/figure-gfm/q11-1.png)<!-- -->
+
+``` r
+#not quite true in NC.
+```
+
+``` r
+c_d %>%
+  filter(state == "TX") %>%
+ggplot(c_d, mapping = aes(x = longitude,
+                            y = latitude,
+                            color = establishment, alpha=0.2)) +
+                     theme_linedraw() +
+                  labs (x = "longitude", y = "latitude", title = "TX's dennys and laquinta", fill = "establishment") + 
+  geom_point()
+```
+
+![](lab-04_files/figure-gfm/q12-1.png)<!-- -->
+
+``` r
+# quite true in TX 
+```
