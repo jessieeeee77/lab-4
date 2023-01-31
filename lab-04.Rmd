@@ -15,38 +15,87 @@ library(dsbox)
 
 ```{r load-data, message = FALSE}
 states <- read_csv("data/states.csv")
+
+library(ggplot2)
+library(dplyr)
+
+c <- dennys
+d <- laquinta
+
 ```
 
 ### Exercise 1
-
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
+What are the dimensions of the Denny’s dataset? 1643 rows 6 columns, the variables are address, city, state, zip, longitude, latitude
+```{r q1, message = FALSE}
+nrow(dennys)
+ncol(dennys)
+dim(dennys)
+glimpse(dennys)
+```
 
 ### Exercise 2
+909 rows 6 columns, the variables are address, city, state, zip, longitude, latitude
 
-Remove this text, and add your answer for Exercise 2 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
+```{r q2}
+nrow(laquinta)
+ncol(laquinta)
+dim(laquinta)
+glimpse(laquinta)
+```
 
 ### Exercise 3
+Take a look at the websites that the data come from (linked above). Are there any La Quinta’s locations outside of the US? If so, which countries? What about Denny’s?
 
+la quinta also locates in Canada, China, Arab, new Zealand, Mexico, turkey, chile, Columbia 
+Denny's locates in the united states only.
 ...
 
 ### Exercise 4
 
-...
+Now take a look at the data. What would be some ways of determining whether or not either establishment has any locations outside the US using just the data (and not the websites). Don’t worry about whether you know how to implement this, just brainstorm some ideas. Write down at least one as your answer, but you’re welcomed to write down a few options too.
+
+I think I might filter out the zip code that does not belong to the States. For instance, I would filter out the zip codes that are not composed of 5 digits, and also those which does not start with states' zip codes.
 
 ### Exercise 5
 
-...
+no rows are found, indicating there is no denny is located outside of the states.
+
+```{r q5}
+c %>%
+  filter(!(state %in% states$abbreviation))
+```
 
 ### Exercise 6
 
 ...
+```{r 6}
+c %>%
+  mutate(country = "United States")
+```
 
  
-Add exercise headings as needed.
+### Exercise 7
 
+cancun Mexico
+partido lglesias Mexico
+Apodaca Mexico
+Medellin Colombia 
+Monterrey Mexico
+Monterrey Mexico
+Oshawa Canada
+Poza Rica Mexico
+San Jose Chiapa Mexico
+Puebla mexico
+San Luis Potosi Mexico
+Tegucigalpa Hunduras
+
+```{r 7}
+d %>%
+  filter(!(state %in% states$abbreviation))
+```
+### Exercise 8
+
+...
+```{r 8}
+
+```
